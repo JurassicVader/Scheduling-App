@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace SpencerProject
 {
-    public partial class Login : Form
+    public partial class HomePage : Form
     {
-        public Login()
+        public HomePage()
         {
             InitializeComponent();
         }
