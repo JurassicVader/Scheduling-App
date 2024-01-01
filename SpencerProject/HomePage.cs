@@ -19,7 +19,7 @@ namespace SpencerProject
 
         private void Exit_btn_Click(object sender, EventArgs e)
         {
-            Close();
+            Application.Exit();
         }
     }
 }
