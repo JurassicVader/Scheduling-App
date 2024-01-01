@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpencerProject.DataBase;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,9 @@ namespace SpencerProject
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            DBConnection.startConnection();
             Application.Run(new Login());
+            DBConnection.closeConnection();
         }
     }
 }

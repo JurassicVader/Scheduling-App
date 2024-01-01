@@ -46,6 +46,7 @@
             this.login_btn.TabIndex = 0;
             this.login_btn.Text = "Login";
             this.login_btn.UseVisualStyleBackColor = true;
+            this.login_btn.Click += new System.EventHandler(this.Login_btn_Click);
             // 
             // username_txtbox
             // 
@@ -103,7 +104,7 @@
             this.exit_btn.TabIndex = 7;
             this.exit_btn.Text = "Exit";
             this.exit_btn.UseVisualStyleBackColor = true;
-            this.exit_btn.Click += new System.EventHandler(this.exit_btn_Click);
+            this.exit_btn.Click += new System.EventHandler(this.Exit_btn_Click);
             // 
             // Login
             // 
