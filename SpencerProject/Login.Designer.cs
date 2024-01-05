@@ -36,6 +36,7 @@
             this.password_lbl = new System.Windows.Forms.Label();
             this.exit_btn = new System.Windows.Forms.Button();
             this.incorrect_txt = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // login_btn
@@ -119,11 +120,23 @@
             this.incorrect_txt.Text = "Invalid Username or Password";
             this.incorrect_txt.Visible = false;
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(12, 180);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(79, 32);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Login";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(444, 260);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.incorrect_txt);
             this.Controls.Add(this.exit_btn);
             this.Controls.Add(this.password_lbl);
@@ -149,6 +162,7 @@
         private System.Windows.Forms.Label password_lbl;
         private System.Windows.Forms.Button exit_btn;
         private System.Windows.Forms.Label incorrect_txt;
+        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -51,9 +51,9 @@
             this.welcome_txt.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.welcome_txt.Location = new System.Drawing.Point(12, 20);
             this.welcome_txt.Name = "welcome_txt";
-            this.welcome_txt.Size = new System.Drawing.Size(179, 22);
+            this.welcome_txt.Size = new System.Drawing.Size(97, 22);
             this.welcome_txt.TabIndex = 0;
-            this.welcome_txt.Text = "Welcome, *BLANK*";
+            this.welcome_txt.Text = "Welcome,";
             // 
             // customers_txt
             // 

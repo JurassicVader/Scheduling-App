@@ -20,8 +20,10 @@ namespace SpencerProject.DataBase
                 // Using the Part II Video as a guide for connecting to the DB.
                 // Naming the connection string constr and getting the data from App.config
                 string constr = ConfigurationManager.ConnectionStrings["localdb"].ConnectionString;
+
                 // Setting the connection variable to the constr variable. constr var holds the connection data.
                 conn = new MySqlConnection(constr);
+
                 // Open the connection 
                 conn.Open();
                 Console.WriteLine("Connection to database Successful. \nDatabase Connection Open");

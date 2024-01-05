@@ -12,9 +12,10 @@ namespace SpencerProject
 {
     public partial class HomePage : Form
     {
-        public HomePage()
+        public HomePage(string username)
         {
             InitializeComponent();
+            welcome_txt.Text = "Welcome Back, " + username;
         }
 
         private void Exit_btn_Click(object sender, EventArgs e)
