@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.login_btn = new System.Windows.Forms.Button();
             this.username_txtbox = new System.Windows.Forms.TextBox();
             this.Password_txtBox = new System.Windows.Forms.TextBox();
@@ -37,12 +38,13 @@
             this.exit_btn = new System.Windows.Forms.Button();
             this.incorrect_txt = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.Timer_ticks = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // login_btn
             // 
             this.login_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.login_btn.Location = new System.Drawing.Point(201, 180);
+            this.login_btn.Location = new System.Drawing.Point(213, 180);
             this.login_btn.Name = "login_btn";
             this.login_btn.Size = new System.Drawing.Size(79, 32);
             this.login_btn.TabIndex = 0;
@@ -53,7 +55,7 @@
             // username_txtbox
             // 
             this.username_txtbox.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.username_txtbox.Location = new System.Drawing.Point(123, 88);
+            this.username_txtbox.Location = new System.Drawing.Point(140, 88);
             this.username_txtbox.Name = "username_txtbox";
             this.username_txtbox.Size = new System.Drawing.Size(253, 26);
             this.username_txtbox.TabIndex = 2;
@@ -61,7 +63,7 @@
             // Password_txtBox
             // 
             this.Password_txtBox.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Password_txtBox.Location = new System.Drawing.Point(123, 131);
+            this.Password_txtBox.Location = new System.Drawing.Point(140, 131);
             this.Password_txtBox.Name = "Password_txtBox";
             this.Password_txtBox.PasswordChar = '*';
             this.Password_txtBox.Size = new System.Drawing.Size(253, 26);
@@ -81,8 +83,9 @@
             // 
             this.title_txt.AutoSize = true;
             this.title_txt.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.title_txt.Location = new System.Drawing.Point(87, 9);
+            this.title_txt.Location = new System.Drawing.Point(77, 9);
             this.title_txt.Name = "title_txt";
+            this.title_txt.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.title_txt.Size = new System.Drawing.Size(252, 36);
             this.title_txt.TabIndex = 5;
             this.title_txt.Text = "User Login Form";
@@ -100,7 +103,7 @@
             // exit_btn
             // 
             this.exit_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.exit_btn.Location = new System.Drawing.Point(297, 180);
+            this.exit_btn.Location = new System.Drawing.Point(314, 180);
             this.exit_btn.Name = "exit_btn";
             this.exit_btn.Size = new System.Drawing.Size(79, 32);
             this.exit_btn.TabIndex = 7;
@@ -113,7 +116,7 @@
             this.incorrect_txt.AutoSize = true;
             this.incorrect_txt.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.incorrect_txt.ForeColor = System.Drawing.Color.Red;
-            this.incorrect_txt.Location = new System.Drawing.Point(103, 54);
+            this.incorrect_txt.Location = new System.Drawing.Point(155, 56);
             this.incorrect_txt.Name = "incorrect_txt";
             this.incorrect_txt.Size = new System.Drawing.Size(219, 18);
             this.incorrect_txt.TabIndex = 8;
@@ -125,17 +128,23 @@
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Location = new System.Drawing.Point(12, 180);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(79, 32);
+            this.button1.Size = new System.Drawing.Size(127, 32);
             this.button1.TabIndex = 9;
-            this.button1.Text = "Login";
+            this.button1.Text = "Check Country";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // Timer_ticks
+            // 
+            this.Timer_ticks.Enabled = true;
+            this.Timer_ticks.Interval = 1000;
+            this.Timer_ticks.Tick += new System.EventHandler(this.Timer_ticks_Tick);
             // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 260);
+            this.ClientSize = new System.Drawing.Size(450, 260);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.incorrect_txt);
             this.Controls.Add(this.exit_btn);
@@ -163,6 +172,7 @@
         private System.Windows.Forms.Button exit_btn;
         private System.Windows.Forms.Label incorrect_txt;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Timer Timer_ticks;
     }
 }
 
