@@ -13,6 +13,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Globalization;
 using Org.BouncyCastle.Asn1.Cmp;
+using System.Runtime.CompilerServices;
 
 namespace SpencerProject
 {
@@ -22,6 +23,7 @@ namespace SpencerProject
         private string windowsLang; // What the windows language is set to.
         private string username;
         private string password;
+        
         
 
         public Login()
@@ -43,6 +45,8 @@ namespace SpencerProject
                 currentLang = "en";
                 Change_To_EN();
             }
+            
+            
             
         }
         
@@ -124,7 +128,7 @@ namespace SpencerProject
             password_lbl.Text = "Password:";
             login_btn.Text = "Login";
             exit_btn.Text = "Exit";
-            //Login.ActiveForm.Text = "User Login";
+            this.Text = "User Login";
         }
 
         
@@ -136,7 +140,7 @@ namespace SpencerProject
             password_lbl.Text = "parola d'ordine:";
             login_btn.Text = "Login";
             exit_btn.Text = "Uscita";
-            //Login.ActiveForm.Text = "Login Utente";
+            this.Text = "Login Utente";
         }
 
         private void Exit_btn_Click(object sender, EventArgs e)
@@ -189,11 +193,6 @@ namespace SpencerProject
             */
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Country/Region: " + CurrentRegion());
-
-        }
 
         private void Timer_ticks_Tick(object sender, EventArgs e)
         {
