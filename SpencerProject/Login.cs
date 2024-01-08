@@ -22,9 +22,6 @@ namespace SpencerProject
         private string currentLang; // Current language set on the Login Screen
         private string windowsLang; // What the windows language is set to.
         private string username;
-        private string password;
-        
-        
 
         public Login()
         {
@@ -39,21 +36,18 @@ namespace SpencerProject
             {
                 currentLang = "it";
                 Change_To_IT();
-            } 
+            }
             else
             {
                 currentLang = "en";
                 Change_To_EN();
-            }
-            
-            
-            
+            } 
         }
-        
-
-        
         private void Language_Checker() // Function that checks for language change
         {
+            /* This function uses the CurrentRegion to check if the PCs language changed.
+             * If it did, then the form will update.
+             */
             try
             {
                 windowsLang = CurrentRegion();
@@ -63,18 +57,12 @@ namespace SpencerProject
                     {
                         Change_To_IT();
                         currentLang = "it";
-
                     }
                     else
                     {
                         Change_To_EN();
                         currentLang = "en";
                     }
-                    //sleep(1);
-                }
-                else
-                {
-                    //sleep(1);
                 }
             } 
             catch
@@ -83,16 +71,9 @@ namespace SpencerProject
             }
         }
 
-        
-        
-
-
-        /* This only checks if the region is United States or Italy. 
-         * Changes only take effect if the region is changed in Control Panel
-         * Changes are immediate and work in app.
-        */
         private static string CurrentRegion()
         {
+            // This function finds what region the PC is set to.
             try
             {
                 CultureInfo.CurrentCulture.ClearCachedData();
@@ -113,11 +94,6 @@ namespace SpencerProject
                 MessageBox.Show(ex.Message);
                 return "None";
             }
-            
-            /*
-            // Ensure the current user's region is set to US.
-            System.Diagnostics.Debug.Assert(RegionInfo.CurrentRegion.DisplayName == "United States");
-            */
         }
         
         private void Change_To_EN() // Changes the Login page to English
@@ -129,18 +105,16 @@ namespace SpencerProject
             login_btn.Text = "Login";
             exit_btn.Text = "Exit";
             this.Text = "User Login";
-        }
-
-        
+        }      
         private void Change_To_IT() // Changes the Login page to Italian
         {
             title_txt.Text = "Modulo di Accesso Utente";
-            incorrect_txt.Text = "Nome untente o password errati";
+            incorrect_txt.Text = "Nome utente o password errati";
             username_lbl.Text = "Nome utente:";
-            password_lbl.Text = "parola d'ordine:";
+            password_lbl.Text = "Password:";
             login_btn.Text = "Login";
-            exit_btn.Text = "Uscita";
-            this.Text = "Login Utente";
+            exit_btn.Text = "Esci";
+            this.Text = "Accesso Utente";
         }
 
         private void Exit_btn_Click(object sender, EventArgs e)
@@ -152,7 +126,7 @@ namespace SpencerProject
         {
             try
             {
-
+                bool success = false;
                 // A SQL statement that is fetching a username and password match from the strings above.
                 string query = "SELECT * FROM user WHERE username = '" + username_txtbox.Text + "' AND password = '" + Password_txtBox.Text + "'";
                 MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
@@ -160,24 +134,21 @@ namespace SpencerProject
 
                 if (reader.Read() == true)
                 {
-                    username = username_txtbox.Text;
-                    password = Password_txtBox.Text;
-                    HomePage homePage = new HomePage(username);
-                    homePage.Show();
-                    this.Hide();
+                    success = true;
                 }
                 else
                 {
                     incorrect_txt.Visible = true;
                 }
                 reader.Close();
-
-                /*
-                while (reader.Read())
+                if (success == true)
                 {
-                    Console.WriteLine(reader[0] + "--" + reader[1]);
+                    username = username_txtbox.Text;
+                    HomePage homePage = new HomePage(username);
+                    homePage.Show();
+                    this.Hide();
                 }
-                */
+
 
 
             }
@@ -196,6 +167,7 @@ namespace SpencerProject
 
         private void Timer_ticks_Tick(object sender, EventArgs e)
         {
+            // Using this to check if the language has changed.
             Language_Checker();
         }
     }
