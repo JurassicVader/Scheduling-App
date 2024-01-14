@@ -37,9 +37,9 @@ namespace SpencerProject
                 name_txtbox.Text = name;
                 address_txtbox.Text = address;
                 phone_txtbox.Text = phone;
-                city_combo.Text = city;
                 country_combo.Text = country;
                 GetCities(country);
+                city_combo.Text = city;
 
 
 
@@ -67,7 +67,7 @@ namespace SpencerProject
                    
                 if (update == true)
                 {
-                    string query = "UPDATE customer LEFT JOIN address ON customer.addressId = address.addressId LEFT JOIN city ON address.cityId = city.cityId LEFT JOIN country ON city.countryId = country.countryId SET customer.customerName = '" + name_txtbox.Text +"', address.Phone= '" + phone_txtbox.Text +"', address.address= '" + address_txtbox.Text +"', address.cityId = (SELECT cityId FROM city WHERE city = '"+city_combo.Text+"') WHERE customer.customerId = 12;";
+                    string query = "UPDATE customer LEFT JOIN address ON customer.addressId = address.addressId LEFT JOIN city ON address.cityId = city.cityId LEFT JOIN country ON city.countryId = country.countryId SET customer.customerName = '" + name_txtbox.Text +"', address.Phone= '" + phone_txtbox.Text.ToString() +"', address.address= '" + address_txtbox.Text +"', address.cityId = (SELECT cityId FROM city WHERE city = '"+city_combo.Text+"') WHERE customer.customerId = 12;";
                     MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
                     cmd.ExecuteNonQuery();
                     Console.WriteLine("Executed Command");
@@ -89,20 +89,24 @@ namespace SpencerProject
 
                     if (activeAddress == true)
                     {
+                        string query3 = "UPDATE address SET phone = '" + phone_txtbox.Text.ToString() + "', cityId = (SELECT cityId FROM city WHERE city = '" + city_combo.Text + "') WHERE address = '" + address_txtbox.Text + "';";
                         string query2 = "INSERT INTO customer(customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + name_txtbox.Text + "', (SELECT addressId FROM address WHERE address = '" + address_txtbox.Text + "') , 1, CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
                         MySqlCommand cmd = new MySqlCommand(query2, DBConnection.conn);
+                        cmd.ExecuteNonQuery();
+                        cmd.CommandText = query3;
                         cmd.ExecuteNonQuery();
                     }
                     else
                     {
-                        string query1 = "INSERT INTO address(address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + address_txtbox.Text + "', '', (SELECT cityId FROM city WHERE city = '" + city_combo.Text + "'), 11111, " + phone_txtbox.Text + ", CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
+                        string query1 = "INSERT INTO address(address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + address_txtbox.Text + "', '', (SELECT cityId FROM city WHERE city = '" + city_combo.Text + "'), 11111, " + phone_txtbox.Text.ToString() + ", CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
                         string query2 = "INSERT INTO customer(customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + name_txtbox.Text + "', (SELECT addressId FROM address WHERE address = '" + address_txtbox.Text + "') , 1, CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
                         MySqlCommand cmd = new MySqlCommand(query1, DBConnection.conn);
                         cmd.ExecuteNonQuery();
                         cmd.CommandText = query2;
                         cmd.ExecuteNonQuery();
                     }
-                    
+
+                    Close();
 
                 }
             }

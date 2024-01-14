@@ -41,6 +41,7 @@
             this.viewAppt_btn = new System.Windows.Forms.Button();
             this.exit_btn = new System.Windows.Forms.Button();
             this.appointments_gridview = new System.Windows.Forms.DataGridView();
+            this.refresh_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.customers_gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointments_gridview)).BeginInit();
             this.SuspendLayout();
@@ -109,6 +110,7 @@
             this.deleteUser_btn.TabIndex = 6;
             this.deleteUser_btn.Text = "Delete";
             this.deleteUser_btn.UseVisualStyleBackColor = true;
+            this.deleteUser_btn.Click += new System.EventHandler(this.deleteUser_btn_Click);
             // 
             // cancelAppt_btn
             // 
@@ -164,7 +166,7 @@
             // exit_btn
             // 
             this.exit_btn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.exit_btn.Location = new System.Drawing.Point(1255, 512);
+            this.exit_btn.Location = new System.Drawing.Point(1255, 553);
             this.exit_btn.Name = "exit_btn";
             this.exit_btn.Size = new System.Drawing.Size(81, 35);
             this.exit_btn.TabIndex = 12;
@@ -185,11 +187,23 @@
             this.appointments_gridview.Size = new System.Drawing.Size(636, 315);
             this.appointments_gridview.TabIndex = 13;
             // 
+            // refresh_btn
+            // 
+            this.refresh_btn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refresh_btn.Location = new System.Drawing.Point(1099, 553);
+            this.refresh_btn.Name = "refresh_btn";
+            this.refresh_btn.Size = new System.Drawing.Size(141, 35);
+            this.refresh_btn.TabIndex = 14;
+            this.refresh_btn.Text = "Refresh Page";
+            this.refresh_btn.UseVisualStyleBackColor = true;
+            this.refresh_btn.Click += new System.EventHandler(this.refresh_btn_Click);
+            // 
             // HomePage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1375, 559);
+            this.ClientSize = new System.Drawing.Size(1370, 600);
+            this.Controls.Add(this.refresh_btn);
             this.Controls.Add(this.appointments_gridview);
             this.Controls.Add(this.exit_btn);
             this.Controls.Add(this.viewAppt_btn);
@@ -228,5 +242,6 @@
         private System.Windows.Forms.Button viewAppt_btn;
         private System.Windows.Forms.Button exit_btn;
         private System.Windows.Forms.DataGridView appointments_gridview;
+        private System.Windows.Forms.Button refresh_btn;
     }
 }
