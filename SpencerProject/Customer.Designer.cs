@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.title_lbl = new System.Windows.Forms.Label();
             this.name_lbl = new System.Windows.Forms.Label();
             this.address_lbl = new System.Windows.Forms.Label();
@@ -41,6 +42,7 @@
             this.cancel_btn = new System.Windows.Forms.Button();
             this.country_combo = new System.Windows.Forms.ComboBox();
             this.city_combo = new System.Windows.Forms.ComboBox();
+            this.page_tick = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // title_lbl
@@ -87,7 +89,7 @@
             // 
             this.city_lbl.AutoSize = true;
             this.city_lbl.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.city_lbl.Location = new System.Drawing.Point(43, 175);
+            this.city_lbl.Location = new System.Drawing.Point(43, 216);
             this.city_lbl.Name = "city_lbl";
             this.city_lbl.Size = new System.Drawing.Size(39, 18);
             this.city_lbl.TabIndex = 4;
@@ -97,7 +99,7 @@
             // 
             this.country_lbl.AutoSize = true;
             this.country_lbl.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.country_lbl.Location = new System.Drawing.Point(17, 216);
+            this.country_lbl.Location = new System.Drawing.Point(17, 175);
             this.country_lbl.Name = "country_lbl";
             this.country_lbl.Size = new System.Drawing.Size(65, 18);
             this.country_lbl.TabIndex = 5;
@@ -151,21 +153,29 @@
             // 
             // country_combo
             // 
+            this.country_combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.country_combo.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.country_combo.FormattingEnabled = true;
-            this.country_combo.Location = new System.Drawing.Point(110, 213);
+            this.country_combo.Location = new System.Drawing.Point(110, 172);
             this.country_combo.Name = "country_combo";
             this.country_combo.Size = new System.Drawing.Size(238, 26);
             this.country_combo.TabIndex = 13;
             // 
             // city_combo
             // 
+            this.city_combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.city_combo.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.city_combo.FormattingEnabled = true;
-            this.city_combo.Location = new System.Drawing.Point(110, 172);
+            this.city_combo.Location = new System.Drawing.Point(110, 213);
             this.city_combo.Name = "city_combo";
             this.city_combo.Size = new System.Drawing.Size(238, 26);
             this.city_combo.TabIndex = 14;
+            // 
+            // page_tick
+            // 
+            this.page_tick.Enabled = true;
+            this.page_tick.Interval = 250;
+            this.page_tick.Tick += new System.EventHandler(this.page_tick_Tick);
             // 
             // Customer
             // 
@@ -207,5 +217,6 @@
         private System.Windows.Forms.Button cancel_btn;
         private System.Windows.Forms.ComboBox country_combo;
         private System.Windows.Forms.ComboBox city_combo;
+        private System.Windows.Forms.Timer page_tick;
     }
 }

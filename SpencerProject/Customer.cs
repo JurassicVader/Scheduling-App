@@ -15,13 +15,20 @@ namespace SpencerProject
     public partial class Customer : Form
     {
         bool update = false;
+        bool country_change = false;
+        string Country = "";
+        string ID;
 
-        public Customer(string name, string phone, string address, string city, string country, string type)
+        public Customer(string id, string name, string phone, string address, string city, string country, string type)
         {
             InitializeComponent();
             // Checks to see if the customer is being created or updated
             if (type == "update")
             {
+                Country = country;
+                GetCountries();
+
+                ID = id;
                 update = true;
                 // Edit the form text
                 title_lbl.Text = "Customer Update";
@@ -32,7 +39,18 @@ namespace SpencerProject
                 phone_txtbox.Text = phone;
                 city_combo.Text = city;
                 country_combo.Text = country;
+                GetCities(country);
+
+
+
+
+            } else
+            {
+                GetCountries();
+                city_combo.Enabled = false;
             }
+            
+            
         }
 
 
@@ -46,11 +64,46 @@ namespace SpencerProject
         {
             try
             {
-                MySqlCommand cmd = new MySqlCommand("", DBConnection.conn);
-                
+                   
                 if (update == true)
                 {
+                    string query = "UPDATE customer LEFT JOIN address ON customer.addressId = address.addressId LEFT JOIN city ON address.cityId = city.cityId LEFT JOIN country ON city.countryId = country.countryId SET customer.customerName = '" + name_txtbox.Text +"', address.Phone= '" + phone_txtbox.Text +"', address.address= '" + address_txtbox.Text +"', address.cityId = (SELECT cityId FROM city WHERE city = '"+city_combo.Text+"') WHERE customer.customerId = 12;";
+                    MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("Executed Command");
+                    Close();
+
+                } 
+                else
+                {
+                    bool activeAddress = false;
+                    string query = "SELECT * FROM address WHERE address = '" + address_txtbox.Text+"';";
+                    MySqlCommand command = new MySqlCommand(query, DBConnection.conn);
+                    MySqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read() == true)
+                    {
+                        activeAddress = true;
+                    }
+                    reader.Close();
+
+                    if (activeAddress == true)
+                    {
+                        string query2 = "INSERT INTO customer(customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + name_txtbox.Text + "', (SELECT addressId FROM address WHERE address = '" + address_txtbox.Text + "') , 1, CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
+                        MySqlCommand cmd = new MySqlCommand(query2, DBConnection.conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        string query1 = "INSERT INTO address(address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + address_txtbox.Text + "', '', (SELECT cityId FROM city WHERE city = '" + city_combo.Text + "'), 11111, " + phone_txtbox.Text + ", CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
+                        string query2 = "INSERT INTO customer(customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + name_txtbox.Text + "', (SELECT addressId FROM address WHERE address = '" + address_txtbox.Text + "') , 1, CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
+                        MySqlCommand cmd = new MySqlCommand(query1, DBConnection.conn);
+                        cmd.ExecuteNonQuery();
+                        cmd.CommandText = query2;
+                        cmd.ExecuteNonQuery();
+                    }
                     
+
                 }
             }
             catch (Exception ex)
@@ -58,6 +111,68 @@ namespace SpencerProject
                 MessageBox.Show(ex.Message);
             }
             
+        }
+
+        public void GetCountries()
+        {
+            //gather all of the countries from the database
+            MySqlCommand cmd = new MySqlCommand("SELECT country FROM country", DBConnection.conn);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                Console.WriteLine(rdr[0]);
+                country_combo.Items.Add(rdr[0]);
+            }
+            rdr.Close();
+        }
+
+        public void GetCities(string country)
+        {
+            // Gather all of the cities associated with the country.
+            //gather all of the countries from the database
+            MySqlCommand cmd = new MySqlCommand("SELECT city.city FROM city JOIN country ON city.countryId = country.countryId WHERE country = '" + country + "';", DBConnection.conn);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                Console.WriteLine(rdr[0]);
+                city_combo.Items.Add(rdr[0]);
+            }
+            rdr.Close();
+        }
+
+        private void page_tick_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                if (Country == "" && country_combo.Text != "")
+                {
+                    Country = country_combo.Text;
+                    Console.WriteLine("Country has been selected: " + country_combo.Text);
+                    city_combo.Enabled = true;
+                    country_change = true;
+                } else if (Country != country_combo.Text)
+                {
+
+                    Console.WriteLine("Country has been changed: " + country_combo.Text);
+                    Country = country_combo.Text;
+                    country_change = true;
+                }
+                
+
+                if (country_change == true)
+                {
+                    city_combo.Text = "";
+                    city_combo.Items.Clear();
+                    Console.WriteLine("Running GetCities");
+                    GetCities(Country);
+                    country_change = false;
+                }
+            } 
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

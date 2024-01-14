@@ -31,7 +31,7 @@ namespace SpencerProject
 
         private void createCustomer_btn_Click(object sender, EventArgs e)
         {
-            Customer customer = new Customer("none", "none", "none", "none", "none", "create");
+            Customer customer = new Customer("none", "none", "none", "none", "none", "none", "create");
             customer.Show();
         }
 
@@ -42,7 +42,7 @@ namespace SpencerProject
             if (userId != null)
             {
                 Console.WriteLine(userId);
-                Customer customer = new Customer(name, phone, address, city, country, "update");
+                Customer customer = new Customer(userId, name, phone, address, city, country, "update");
                 customer.Show();
             } else
             {
