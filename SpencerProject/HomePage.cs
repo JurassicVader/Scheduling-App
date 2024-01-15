@@ -82,7 +82,7 @@ namespace SpencerProject
         {
             try
             {
-                MySqlCommand cmd = new MySqlCommand("SELECT customer.customerId AS ID, customer.customerName AS Customer_Name, address.phone AS Phone_Number, address.address AS Address, city.city AS City, country.country AS Country FROM customer JOIN address ON customer.addressId = address.addressId JOIN city ON address.cityId = city.cityId JOIN country ON city.countryId = country.countryId;", DBConnection.conn);
+                MySqlCommand cmd = new MySqlCommand("SELECT customer.customerId AS ID, customer.customerName AS Customer_Name, address.phone AS Phone_Number, address.address AS Address, city.city AS City, country.country AS Country FROM customer JOIN address ON customer.addressId = address.addressId JOIN city ON address.cityId = city.cityId JOIN country ON city.countryId = country.countryId ORDER BY customer.customerId;", DBConnection.conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 var customerTable = new BindingSource();
                 customerTable.DataSource = rdr;

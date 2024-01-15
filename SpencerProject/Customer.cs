@@ -19,6 +19,15 @@ namespace SpencerProject
         string Country = "";
         string ID;
 
+        private static readonly char[] SpecialChars =
+       {
+                '\\', '|', '!', '#', '$', '%', '&', '/', '(', ')',
+                    '=', '?', '»', '«', '@', '£', '§', '€', '{', '}',
+                        '.', '-', ';', '\'', '<', '>', '_', ',', '*', '+'
+};
+
+        public static bool HasSpecialChar(string input) => input != null && input.IndexOfAny(SpecialChars) != -1;
+
         public Customer(string id, string name, string phone, string address, string city, string country, string type)
         {
             InitializeComponent();
@@ -64,20 +73,34 @@ namespace SpencerProject
         {
             try
             {
-                   
+                string PhoneNum = phone_txtbox.Text;
+
+                Console.WriteLine(PhoneNum);
                 if (update == true)
                 {
-                    string query = "UPDATE customer LEFT JOIN address ON customer.addressId = address.addressId LEFT JOIN city ON address.cityId = city.cityId LEFT JOIN country ON city.countryId = country.countryId SET customer.customerName = '" + name_txtbox.Text +"', address.Phone= '" + phone_txtbox.Text.ToString() +"', address.address= '" + address_txtbox.Text +"', address.cityId = (SELECT cityId FROM city WHERE city = '"+city_combo.Text+"') WHERE customer.customerId = 12;";
+                    string query = "UPDATE customer JOIN address ON customer.addressId = address.addressId LEFT JOIN city ON address.cityId = city.cityId LEFT JOIN country ON city.countryId = country.countryId SET customer.customerName = '" + name_txtbox.Text.Trim() + "', address.Phone= '" + PhoneNum + "', address.address= '" + address_txtbox.Text.Trim() + "', address.cityId = (SELECT cityId FROM city WHERE city = '"+city_combo.Text.Trim() + "') WHERE customer.customerId ="+ ID +";";
                     MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
-                    cmd.ExecuteNonQuery();
-                    Console.WriteLine("Executed Command");
-                    Close();
+                    if (HasSpecialChar(name_txtbox.Text) || HasSpecialChar(address_txtbox.Text) || HasSpecialChar(city_combo.Text) || phone_txtbox.Text == "" || HasSpecialChar(country_combo.Text))
+                    {
+                        MessageBox.Show("One or more of the fields are empty or has a special character. \nPlease remove all special characters and fully fill out the form. \n(Phone Number field accepts \"-\")");
+                        
+                    } else if (long.TryParse(PhoneNum.Replace("-", ""), out _) == false)
+                    {
+                        MessageBox.Show("The phone number field only accepts digits and dashes.");
+                    }
+                    else
+                    {
+                        cmd.ExecuteNonQuery();
+                        Console.WriteLine("Executed Command");
+                        Close();
+                    }
+                    
 
                 } 
                 else
                 {
                     bool activeAddress = false;
-                    string query = "SELECT * FROM address WHERE address = '" + address_txtbox.Text+"';";
+                    string query = "SELECT * FROM address WHERE address = '" + address_txtbox.Text.Trim()+"';";
                     MySqlCommand command = new MySqlCommand(query, DBConnection.conn);
                     MySqlDataReader reader = command.ExecuteReader();
 
@@ -86,33 +109,45 @@ namespace SpencerProject
                         activeAddress = true;
                     }
                     reader.Close();
-
-                    if (activeAddress == true)
+                    if (HasSpecialChar(name_txtbox.Text) || HasSpecialChar(address_txtbox.Text) || HasSpecialChar(city_combo.Text) || phone_txtbox.Text == "" || HasSpecialChar(country_combo.Text))
                     {
-                        string query3 = "UPDATE address SET phone = '" + phone_txtbox.Text.ToString() + "', cityId = (SELECT cityId FROM city WHERE city = '" + city_combo.Text + "') WHERE address = '" + address_txtbox.Text + "';";
-                        string query2 = "INSERT INTO customer(customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + name_txtbox.Text + "', (SELECT addressId FROM address WHERE address = '" + address_txtbox.Text + "') , 1, CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
-                        MySqlCommand cmd = new MySqlCommand(query2, DBConnection.conn);
-                        cmd.ExecuteNonQuery();
-                        cmd.CommandText = query3;
-                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("One or more of the fields are empty or has a special character. \nPlease remove all special characters and fully fill out the form. \n(Phone Number field accepts \"-\")");
+                    }
+                    else if (long.TryParse(PhoneNum.Replace("-", ""), out _) == false)
+                    {
+                        MessageBox.Show("The phone number field only accepts digits and dashes.");
                     }
                     else
                     {
-                        string query1 = "INSERT INTO address(address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + address_txtbox.Text + "', '', (SELECT cityId FROM city WHERE city = '" + city_combo.Text + "'), 11111, " + phone_txtbox.Text.ToString() + ", CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
-                        string query2 = "INSERT INTO customer(customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + name_txtbox.Text + "', (SELECT addressId FROM address WHERE address = '" + address_txtbox.Text + "') , 1, CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
-                        MySqlCommand cmd = new MySqlCommand(query1, DBConnection.conn);
-                        cmd.ExecuteNonQuery();
-                        cmd.CommandText = query2;
-                        cmd.ExecuteNonQuery();
+                        if (activeAddress == true)
+                        {
+                            string query3 = "UPDATE address SET phone = '" + PhoneNum + "', cityId = (SELECT cityId FROM city WHERE city = '" + city_combo.Text.Trim() + "') WHERE address = '" + address_txtbox.Text.Trim() + "';";
+                            string query2 = "INSERT INTO customer(customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + name_txtbox.Text.Trim() + "', (SELECT addressId FROM address WHERE address = '" + address_txtbox.Text.Trim() + "') , 1, CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
+                            MySqlCommand cmd = new MySqlCommand(query2, DBConnection.conn);
+                            cmd.ExecuteNonQuery();
+                            cmd.CommandText = query3;
+                            cmd.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            string query1 = "INSERT INTO address(address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + address_txtbox.Text.Trim() + "', '', (SELECT cityId FROM city WHERE city = '" + city_combo.Text.Trim() + "'), 11111, '" + PhoneNum + "', CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
+                            string query2 = "INSERT INTO customer(customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES('" + name_txtbox.Text.Trim() + "', (SELECT addressId FROM address WHERE address = '" + address_txtbox.Text.Trim() + "') , 1, CURRENT_TIMESTAMP(), 'Spencer', CURRENT_TIMESTAMP(), 'Spencer');";
+                            MySqlCommand cmd = new MySqlCommand(query1, DBConnection.conn);
+                            cmd.ExecuteNonQuery();
+                            cmd.CommandText = query2;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        Close();
                     }
-
-                    Close();
-
+                    
+                    
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + " \nCreation failed.");
+
             }
             
         }
@@ -120,7 +155,7 @@ namespace SpencerProject
         public void GetCountries()
         {
             //gather all of the countries from the database
-            MySqlCommand cmd = new MySqlCommand("SELECT country FROM country", DBConnection.conn);
+            MySqlCommand cmd = new MySqlCommand("SELECT country FROM country ORDER BY country", DBConnection.conn);
             MySqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -134,7 +169,7 @@ namespace SpencerProject
         {
             // Gather all of the cities associated with the country.
             //gather all of the countries from the database
-            MySqlCommand cmd = new MySqlCommand("SELECT city.city FROM city JOIN country ON city.countryId = country.countryId WHERE country = '" + country + "';", DBConnection.conn);
+            MySqlCommand cmd = new MySqlCommand("SELECT city.city FROM city JOIN country ON city.countryId = country.countryId WHERE country = '" + country + "' ORDER BY city.city;", DBConnection.conn);
             MySqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {

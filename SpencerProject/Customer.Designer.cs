@@ -111,7 +111,7 @@
             this.name_txtbox.Location = new System.Drawing.Point(110, 54);
             this.name_txtbox.Name = "name_txtbox";
             this.name_txtbox.Size = new System.Drawing.Size(238, 26);
-            this.name_txtbox.TabIndex = 6;
+            this.name_txtbox.TabIndex = 1;
             // 
             // address_txtbox
             // 
@@ -119,7 +119,7 @@
             this.address_txtbox.Location = new System.Drawing.Point(110, 132);
             this.address_txtbox.Name = "address_txtbox";
             this.address_txtbox.Size = new System.Drawing.Size(238, 26);
-            this.address_txtbox.TabIndex = 7;
+            this.address_txtbox.TabIndex = 3;
             // 
             // phone_txtbox
             // 
@@ -127,7 +127,7 @@
             this.phone_txtbox.Location = new System.Drawing.Point(110, 93);
             this.phone_txtbox.Name = "phone_txtbox";
             this.phone_txtbox.Size = new System.Drawing.Size(238, 26);
-            this.phone_txtbox.TabIndex = 8;
+            this.phone_txtbox.TabIndex = 2;
             // 
             // create_btn
             // 
@@ -159,7 +159,7 @@
             this.country_combo.Location = new System.Drawing.Point(110, 172);
             this.country_combo.Name = "country_combo";
             this.country_combo.Size = new System.Drawing.Size(238, 26);
-            this.country_combo.TabIndex = 13;
+            this.country_combo.TabIndex = 4;
             // 
             // city_combo
             // 
@@ -169,7 +169,7 @@
             this.city_combo.Location = new System.Drawing.Point(110, 213);
             this.city_combo.Name = "city_combo";
             this.city_combo.Size = new System.Drawing.Size(238, 26);
-            this.city_combo.TabIndex = 14;
+            this.city_combo.TabIndex = 5;
             // 
             // page_tick
             // 
