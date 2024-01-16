@@ -49,7 +49,7 @@
             // 
             this.title_lbl.AutoSize = true;
             this.title_lbl.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.title_lbl.Location = new System.Drawing.Point(16, 9);
+            this.title_lbl.Location = new System.Drawing.Point(10, 9);
             this.title_lbl.Name = "title_lbl";
             this.title_lbl.Size = new System.Drawing.Size(167, 22);
             this.title_lbl.TabIndex = 0;

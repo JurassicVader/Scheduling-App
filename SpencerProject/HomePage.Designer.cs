@@ -38,10 +38,11 @@
             this.updateAppt_btn = new System.Windows.Forms.Button();
             this.createCustomer_btn = new System.Windows.Forms.Button();
             this.scheduleAppt_btn = new System.Windows.Forms.Button();
-            this.viewAppt_btn = new System.Windows.Forms.Button();
             this.exit_btn = new System.Windows.Forms.Button();
             this.appointments_gridview = new System.Windows.Forms.DataGridView();
             this.refresh_btn = new System.Windows.Forms.Button();
+            this.view_combo = new System.Windows.Forms.ComboBox();
+            this.view_lbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.customers_gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointments_gridview)).BeginInit();
             this.SuspendLayout();
@@ -70,7 +71,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(949, 79);
+            this.label1.Location = new System.Drawing.Point(735, 79);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(160, 27);
             this.label1.TabIndex = 2;
@@ -153,16 +154,6 @@
             this.scheduleAppt_btn.Text = "Schedule Appointment";
             this.scheduleAppt_btn.UseVisualStyleBackColor = true;
             // 
-            // viewAppt_btn
-            // 
-            this.viewAppt_btn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.viewAppt_btn.Location = new System.Drawing.Point(726, 458);
-            this.viewAppt_btn.Name = "viewAppt_btn";
-            this.viewAppt_btn.Size = new System.Drawing.Size(186, 35);
-            this.viewAppt_btn.TabIndex = 11;
-            this.viewAppt_btn.Text = "View Appointments";
-            this.viewAppt_btn.UseVisualStyleBackColor = true;
-            // 
             // exit_btn
             // 
             this.exit_btn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -198,15 +189,40 @@
             this.refresh_btn.UseVisualStyleBackColor = true;
             this.refresh_btn.Click += new System.EventHandler(this.refresh_btn_Click);
             // 
+            // view_combo
+            // 
+            this.view_combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.view_combo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.view_combo.FormattingEnabled = true;
+            this.view_combo.Items.AddRange(new object[] {
+            "Week",
+            "Month",
+            "All Appointments"});
+            this.view_combo.Location = new System.Drawing.Point(1124, 78);
+            this.view_combo.Name = "view_combo";
+            this.view_combo.Size = new System.Drawing.Size(226, 32);
+            this.view_combo.TabIndex = 15;
+            // 
+            // view_lbl
+            // 
+            this.view_lbl.AutoSize = true;
+            this.view_lbl.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.view_lbl.Location = new System.Drawing.Point(1049, 79);
+            this.view_lbl.Name = "view_lbl";
+            this.view_lbl.Size = new System.Drawing.Size(69, 27);
+            this.view_lbl.TabIndex = 16;
+            this.view_lbl.Text = "View:";
+            // 
             // HomePage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 600);
+            this.Controls.Add(this.view_lbl);
+            this.Controls.Add(this.view_combo);
             this.Controls.Add(this.refresh_btn);
             this.Controls.Add(this.appointments_gridview);
             this.Controls.Add(this.exit_btn);
-            this.Controls.Add(this.viewAppt_btn);
             this.Controls.Add(this.scheduleAppt_btn);
             this.Controls.Add(this.createCustomer_btn);
             this.Controls.Add(this.cancelAppt_btn);
@@ -239,9 +255,10 @@
         private System.Windows.Forms.Button updateAppt_btn;
         private System.Windows.Forms.Button createCustomer_btn;
         private System.Windows.Forms.Button scheduleAppt_btn;
-        private System.Windows.Forms.Button viewAppt_btn;
         private System.Windows.Forms.Button exit_btn;
         private System.Windows.Forms.DataGridView appointments_gridview;
         private System.Windows.Forms.Button refresh_btn;
+        private System.Windows.Forms.ComboBox view_combo;
+        private System.Windows.Forms.Label view_lbl;
     }
 }
