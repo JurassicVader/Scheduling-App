@@ -132,6 +132,7 @@
             this.updateAppt_btn.TabIndex = 7;
             this.updateAppt_btn.Text = "Update";
             this.updateAppt_btn.UseVisualStyleBackColor = true;
+            this.updateAppt_btn.Click += new System.EventHandler(this.updateAppt_btn_Click);
             // 
             // createCustomer_btn
             // 
@@ -153,6 +154,7 @@
             this.scheduleAppt_btn.TabIndex = 10;
             this.scheduleAppt_btn.Text = "Schedule Appointment";
             this.scheduleAppt_btn.UseVisualStyleBackColor = true;
+            this.scheduleAppt_btn.Click += new System.EventHandler(this.scheduleAppt_btn_Click);
             // 
             // exit_btn
             // 
