@@ -30,6 +30,8 @@ namespace SpencerProject
             InitializeComponent();
             view_combo.SelectedIndex = 1; // This sets the appointments Calendar view to Month.(0 = week, 1 = month, 2 = all)
             Console.WriteLine("TimeZone Converted: " + TimeZoneConvert());
+            customers_gridView.RowHeadersVisible = false;
+            appointments_gridview.RowHeadersVisible = false;
             try
             {
                 // Populates the customers gridview table.

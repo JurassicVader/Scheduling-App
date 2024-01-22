@@ -1,6 +1,7 @@
 ﻿using SpencerProject.DataBase;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,6 +21,7 @@ namespace SpencerProject
             DBConnection.startConnection();
             Application.Run(new Login());
             DBConnection.closeConnection();
+
         }
     }
 }

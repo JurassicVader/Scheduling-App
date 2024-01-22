@@ -148,9 +148,6 @@ namespace SpencerProject
                     homePage.Show();
                     this.Hide();
                 }
-
-
-
             }
             catch(Exception ex)
             {
@@ -163,8 +160,6 @@ namespace SpencerProject
             } else { MessageBox.Show("Connection Closed"); }
             */
         }
-
-
         private void Timer_ticks_Tick(object sender, EventArgs e)
         {
             // Using this to check if the language has changed.
