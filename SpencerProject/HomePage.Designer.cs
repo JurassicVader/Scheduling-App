@@ -34,7 +34,7 @@
             this.customers_gridView = new System.Windows.Forms.DataGridView();
             this.updateUser_btn = new System.Windows.Forms.Button();
             this.deleteUser_btn = new System.Windows.Forms.Button();
-            this.cancelAppt_btn = new System.Windows.Forms.Button();
+            this.DeleteAppt_btn = new System.Windows.Forms.Button();
             this.updateAppt_btn = new System.Windows.Forms.Button();
             this.createCustomer_btn = new System.Windows.Forms.Button();
             this.scheduleAppt_btn = new System.Windows.Forms.Button();
@@ -113,15 +113,16 @@
             this.deleteUser_btn.UseVisualStyleBackColor = true;
             this.deleteUser_btn.Click += new System.EventHandler(this.deleteUser_btn_Click);
             // 
-            // cancelAppt_btn
+            // DeleteAppt_btn
             // 
-            this.cancelAppt_btn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cancelAppt_btn.Location = new System.Drawing.Point(1255, 458);
-            this.cancelAppt_btn.Name = "cancelAppt_btn";
-            this.cancelAppt_btn.Size = new System.Drawing.Size(81, 35);
-            this.cancelAppt_btn.TabIndex = 8;
-            this.cancelAppt_btn.Text = "Cancel";
-            this.cancelAppt_btn.UseVisualStyleBackColor = true;
+            this.DeleteAppt_btn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeleteAppt_btn.Location = new System.Drawing.Point(1255, 458);
+            this.DeleteAppt_btn.Name = "DeleteAppt_btn";
+            this.DeleteAppt_btn.Size = new System.Drawing.Size(81, 35);
+            this.DeleteAppt_btn.TabIndex = 8;
+            this.DeleteAppt_btn.Text = "Delete";
+            this.DeleteAppt_btn.UseVisualStyleBackColor = true;
+            this.DeleteAppt_btn.Click += new System.EventHandler(this.DeleteAppt_btn_Click);
             // 
             // updateAppt_btn
             // 
@@ -179,6 +180,7 @@
             this.appointments_gridview.Name = "appointments_gridview";
             this.appointments_gridview.Size = new System.Drawing.Size(636, 315);
             this.appointments_gridview.TabIndex = 13;
+            this.appointments_gridview.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.appointments_gridview_CellMouseClick);
             // 
             // refresh_btn
             // 
@@ -204,6 +206,7 @@
             this.view_combo.Name = "view_combo";
             this.view_combo.Size = new System.Drawing.Size(226, 32);
             this.view_combo.TabIndex = 15;
+            this.view_combo.SelectedIndexChanged += new System.EventHandler(this.view_combo_SelectedIndexChanged);
             // 
             // view_lbl
             // 
@@ -227,7 +230,7 @@
             this.Controls.Add(this.exit_btn);
             this.Controls.Add(this.scheduleAppt_btn);
             this.Controls.Add(this.createCustomer_btn);
-            this.Controls.Add(this.cancelAppt_btn);
+            this.Controls.Add(this.DeleteAppt_btn);
             this.Controls.Add(this.updateAppt_btn);
             this.Controls.Add(this.deleteUser_btn);
             this.Controls.Add(this.updateUser_btn);
@@ -253,7 +256,7 @@
         private System.Windows.Forms.DataGridView customers_gridView;
         private System.Windows.Forms.Button updateUser_btn;
         private System.Windows.Forms.Button deleteUser_btn;
-        private System.Windows.Forms.Button cancelAppt_btn;
+        private System.Windows.Forms.Button DeleteAppt_btn;
         private System.Windows.Forms.Button updateAppt_btn;
         private System.Windows.Forms.Button createCustomer_btn;
         private System.Windows.Forms.Button scheduleAppt_btn;

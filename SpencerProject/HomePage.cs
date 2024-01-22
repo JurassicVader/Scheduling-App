@@ -18,13 +18,18 @@ namespace SpencerProject
     public partial class HomePage : Form
     {
         string customerId, name, phone, address, city, country; // Variables for the customer Form.
-        string userId, appt_type, appt_customerId, appt_time, appt_date, appt_desc; // variables for the appointment Form.
-        
+        string appt_id, userId, appt_title, appt_type, appt_customerId, appt_time, appt_end, appt_date, appt_desc; // variables for the appointment Form.
+
+        private void view_combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            refresh();
+        }
+
         public HomePage(string username)
         {
             InitializeComponent();
-            welcome_txt.Text = "Welcome Back, " + username;
-            
+            view_combo.SelectedIndex = 1; // This sets the appointments Calendar view to Month.(0 = week, 1 = month, 2 = all)
+            Console.WriteLine("TimeZone Converted: " + TimeZoneConvert());
             try
             {
                 // Populates the customers gridview table.
@@ -50,7 +55,7 @@ namespace SpencerProject
                 rdr2.Close();
 
                 // Populates the schedule gridview table
-                cmd.CommandText = "SELECT appointmentId AS ID, customerId AS 'Customer ID', userId AS 'User ID', title AS Title, appointment.description AS 'Description', CONCAT(HOUR(start), ':', MINUTE(start)) AS 'Start Time', CONCAT(TIMESTAMPDIFF(MINUTE, start, end), ' Minutes') AS 'Appointment Length',CONCAT(DAY(start) , '/', MONTH(start), '/', YEAR(start)) AS 'Date'FROM appointment;";
+                cmd.CommandText = "SELECT appointmentId AS ID, customerId AS 'Customer ID', userId AS 'User ID', title AS Title, type AS Type, appointment.description AS 'Description', CONCAT(HOUR(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() +"'))) AS 'Start Time', CONCAT(HOUR(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() +"'))) AS 'End Time', CONCAT(TIMESTAMPDIFF(MINUTE, start, end), ' Minutes') AS 'Appointment Length',CONCAT(MONTH(start), '/', DAY(start), '/',YEAR(start)) AS 'Date'FROM appointment WHERE MONTH(start) = MONTH(CURRENT_DATE()) AND YEAR(start) = YEAR(CURRENT_DATE());";
                 MySqlDataReader rdr3 = cmd.ExecuteReader();
                 if (rdr3.HasRows)
                 {
@@ -58,7 +63,60 @@ namespace SpencerProject
                     apptTable.DataSource = rdr3;
                     appointments_gridview.DataSource = apptTable;
                 }
-                rdr1.Close();
+                rdr3.Close();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            welcome_txt.Text = "Welcome Back, " + username + "\nUser ID: " + userId;
+        }
+
+        private void appointments_gridview_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            //appt_id, userId, appt_type, appt_customerId, appt_time, appt_date, appt_desc;
+            // ORDER: ID[0], CustomerId[1], userId[2], Title[3], tpye[4], desc[5], start time[6], end time[7], appointment length[8], date[9]
+
+            appt_id = appointments_gridview.CurrentRow.Cells[0].Value.ToString();
+            appt_customerId = appointments_gridview.CurrentRow.Cells[1].Value.ToString();
+            userId = appointments_gridview.CurrentRow.Cells[2].Value.ToString();
+            appt_title = appointments_gridview.CurrentRow.Cells[3].Value.ToString();
+            appt_type = appointments_gridview.CurrentRow.Cells[4].Value.ToString();
+            appt_desc = appointments_gridview.CurrentRow.Cells[5].Value.ToString();
+            appt_time = appointments_gridview.CurrentRow.Cells[6].Value.ToString();
+            appt_end = appointments_gridview.CurrentRow.Cells[7].Value.ToString();
+            appt_date = appointments_gridview.CurrentRow.Cells[9].Value.ToString();
+        }
+
+        private void DeleteAppt_btn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string query = "DELETE FROM appointment WHERE appointmentId = " + appt_id + ";";
+                if (appt_id != null)
+                {
+                    DialogResult confirmMessage = MessageBox.Show("Deleting this appointment is permanent: \nCustomer ID: " + appt_customerId + "\nUser ID: " + userId + "\nTitle: " + appt_title + "\nDescription: " + appt_desc + "\nTime: " + appt_time + "\n\n Please confirm if you wanted this appointment deleted?", "Confirm Appointment Deletion", MessageBoxButtons.YesNo);
+                    if (confirmMessage == DialogResult.Yes)
+                    {
+                        // Delete User
+                        MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
+                        cmd.ExecuteNonQuery();
+                        Console.WriteLine("Appointment deleted");
+                        refresh();
+                    }
+                    else if (DialogResult == DialogResult.No)
+                    {
+                        // Pass
+                        Console.WriteLine("Appointment not deleted");
+                        refresh();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please Select an Appointment.");
+                    refresh();
+                }
 
             }
             catch (Exception ex)
@@ -66,7 +124,6 @@ namespace SpencerProject
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void deleteUser_btn_Click(object sender, EventArgs e)
         {
             try
@@ -102,11 +159,23 @@ namespace SpencerProject
             }
             
         }
-
+        private string TimeZoneConvert() // returns the time difference from machine to UTC. OUTPUT EX. +10:00
+        {
+            TimeZone localZone = TimeZone.CurrentTimeZone;
+            DateTime currentDate = DateTime.Now;
+            TimeSpan currentOffset = localZone.GetUtcOffset(currentDate);
+            if (currentOffset.Hours >= 0)
+            {
+                return "+" + currentOffset.Hours + ":" + currentOffset.Minutes;
+            }
+            return currentOffset.Hours +":"+currentOffset.Minutes;
+        }
         private void refresh()
         {
+            string query = "";
             try
             {
+                // Content for the customer section.
                 MySqlCommand cmd = new MySqlCommand("SELECT customer.customerId AS ID, customer.customerName AS Customer_Name, address.phone AS Phone_Number, address.address AS Address, city.city AS City, country.country AS Country FROM customer JOIN address ON customer.addressId = address.addressId JOIN city ON address.cityId = city.cityId JOIN country ON city.countryId = country.countryId ORDER BY customer.customerId;", DBConnection.conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 var customerTable = new BindingSource();
@@ -114,13 +183,44 @@ namespace SpencerProject
                 Console.WriteLine("Updated GridView");
                 customers_gridView.DataSource = customerTable;
                 rdr.Close();
+
+                // Content for the Schedule section
+
+                appointments_gridview.Rows.Clear();
+                if (view_combo.SelectedIndex == 0) // Selected view is Week
+                {
+                    query = "SELECT appointmentId AS ID, customerId AS 'Customer ID', userId AS 'User ID', title AS Title, type AS Type, appointment.description AS 'Description', CONCAT(HOUR(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() +"'))) AS 'Start Time', CONCAT(HOUR(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() +"'))) AS 'End Time',  CONCAT(TIMESTAMPDIFF(MINUTE, start, end), ' Minutes') AS 'Appointment Length',CONCAT(MONTH(start), '/', DAY(start), '/',YEAR(start)) AS 'Date'FROM appointment WHERE YEARWEEK(appointment.start) = YEARWEEK(curdate());";
+                } 
+                else if (view_combo.SelectedIndex == 1) // Selected view is Month
+                {
+                    query = "SELECT appointmentId AS ID, customerId AS 'Customer ID', userId AS 'User ID', title AS Title, type AS Type, appointment.description AS 'Description', CONCAT(HOUR(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() +"'))) AS 'Start Time', CONCAT(HOUR(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() +"'))) AS 'End Time',CONCAT(TIMESTAMPDIFF(MINUTE, start, end), ' Minutes') AS 'Appointment Length',CONCAT(MONTH(start), '/', DAY(start), '/',YEAR(start)) AS 'Date'FROM appointment WHERE MONTH(start) = MONTH(CURRENT_DATE()) AND YEAR(start) = YEAR(CURRENT_DATE());";
+                } 
+                else if (view_combo.SelectedIndex == 2) // Selected view is All
+                {
+                    query = "SELECT appointmentId AS ID, customerId AS 'Customer ID', userId AS 'User ID', title AS Title, type AS Type, appointment.description AS 'Description', CONCAT(HOUR(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() +"'))) AS 'Start Time', CONCAT(HOUR(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() +"'))) AS 'End Time',CONCAT(TIMESTAMPDIFF(MINUTE, start, end), ' Minutes') AS 'Appointment Length',CONCAT(MONTH(start), '/', DAY(start), '/',YEAR(start)) AS 'Date'FROM appointment;";               
+                }
+                if (query != "")
+                {
+                    cmd.CommandText = query;
+                    MySqlDataReader rdr2 = cmd.ExecuteReader();
+                    if (rdr2.HasRows)
+                    {
+                        var apptTable = new BindingSource();
+                        apptTable.DataSource = rdr2;
+                        appointments_gridview.DataSource = apptTable;
+                    }
+                    rdr2.Close();
+
+                } else
+                {
+                    MessageBox.Show("There was an error populating the scheduling Table");
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "Data was not able to be refreshed. Please try again or restart application");
             }
         }
-
 
         private void refresh_btn_Click(object sender, EventArgs e)
         {
@@ -129,14 +229,23 @@ namespace SpencerProject
 
         private void scheduleAppt_btn_Click(object sender, EventArgs e)
         {
-            Appointment appt = new Appointment(userId, "none", "none", "none", "none", "none", false);
+            Appointment appt = new Appointment(appt_id, userId, "none", "none", "none", "none", "none", "none", "none", false);
             appt.ShowDialog();
+            refresh();
         }
 
         private void updateAppt_btn_Click(object sender, EventArgs e)
         {
-            Appointment appt = new Appointment(userId, appt_type, appt_customerId, appt_time, appt_date, appt_desc, true);
-            appt.ShowDialog();
+            if (appt_id != null)
+            {
+                Appointment appt = new Appointment(appt_id, userId, appt_title, appt_type, appt_customerId, appt_time, appt_end, appt_date, appt_desc, true);
+                appt.ShowDialog();
+                refresh();
+            } else
+            {
+                MessageBox.Show("Please Select an Appointment to Update");
+            }
+
         }
 
         private void Exit_btn_Click(object sender, EventArgs e)

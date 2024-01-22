@@ -94,8 +94,6 @@ namespace SpencerProject
                         Console.WriteLine("Executed Command");
                         Close();
                     }
-                    
-
                 } 
                 else
                 {
