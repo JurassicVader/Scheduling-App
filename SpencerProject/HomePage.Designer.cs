@@ -201,7 +201,8 @@
             this.view_combo.Items.AddRange(new object[] {
             "Week",
             "Month",
-            "All Appointments"});
+            "All Appointments",
+            "Specific Day(Calendar)"});
             this.view_combo.Location = new System.Drawing.Point(1124, 78);
             this.view_combo.Name = "view_combo";
             this.view_combo.Size = new System.Drawing.Size(226, 32);

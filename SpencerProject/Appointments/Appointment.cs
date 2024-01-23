@@ -102,6 +102,7 @@ namespace SpencerProject.Appointments
             TimeZone localZone = TimeZone.CurrentTimeZone;
             DateTime currentDate = DateTime.Now;
             TimeSpan currentOffset = localZone.GetUtcOffset(currentDate);
+            
             if (currentOffset.Hours >= 0)
             {
                 if (currentOffset.Hours >= 10)

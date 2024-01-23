@@ -19,12 +19,11 @@ namespace SpencerProject
     {
         string customerId, name, phone, address, city, country; // Variables for the customer Form.
         string appt_id, userId, appt_title, appt_type, appt_customerId, appt_time, appt_end, appt_date, appt_desc; // variables for the appointment Form.
-
+        DateTime cal_date; // date for the calendar
         private void view_combo_SelectedIndexChanged(object sender, EventArgs e)
         {
             refresh();
         }
-
         public HomePage(string username)
         {
             InitializeComponent();
@@ -32,6 +31,7 @@ namespace SpencerProject
             Console.WriteLine("TimeZone Converted: " + TimeZoneConvert());
             customers_gridView.RowHeadersVisible = false;
             appointments_gridview.RowHeadersVisible = false;
+            //calendar.MaxSelectionCount = 1;
             try
             {
                 // Populates the customers gridview table.
@@ -66,6 +66,7 @@ namespace SpencerProject
                     appointments_gridview.DataSource = apptTable;
                 }
                 rdr3.Close();
+                alert();
 
             }
             catch (Exception ex)
@@ -74,7 +75,18 @@ namespace SpencerProject
             }
             welcome_txt.Text = "Welcome Back, " + username + "\nUser ID: " + userId;
         }
+        private void alert()
+        {
+            string query = "SELECT appointmentId FROM appointment WHERE userId = "+ userId +" AND start BETWEEN UTC_time() AND DATE_ADD(UTC_time(), INTERVAL 15 MINUTE);";
+            MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
+            MySqlDataReader reader = cmd.ExecuteReader();
 
+            if (reader.Read() == true)
+            {
+                MessageBox.Show("Check your upcoming appointments.\nYou have an appointment in 15 minutes or less!", "ALERT: UPCOMING APPOINTMENT", MessageBoxButtons.OK);
+            }
+            reader.Close();
+        }
         private void appointments_gridview_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             //appt_id, userId, appt_type, appt_customerId, appt_time, appt_date, appt_desc;
@@ -90,7 +102,6 @@ namespace SpencerProject
             appt_end = appointments_gridview.CurrentRow.Cells[7].Value.ToString();
             appt_date = appointments_gridview.CurrentRow.Cells[9].Value.ToString();
         }
-
         private void DeleteAppt_btn_Click(object sender, EventArgs e)
         {
             try
@@ -200,6 +211,20 @@ namespace SpencerProject
                 else if (view_combo.SelectedIndex == 2) // Selected view is All
                 {
                     query = "SELECT appointmentId AS ID, customerId AS 'Customer ID', userId AS 'User ID', title AS Title, type AS Type, appointment.description AS 'Description', CONCAT(HOUR(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(appointment.start, '+00:00', '"+TimeZoneConvert() +"'))) AS 'Start Time', CONCAT(HOUR(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(end, '+00:00', '"+TimeZoneConvert() +"'))) AS 'End Time',CONCAT(TIMESTAMPDIFF(MINUTE, start, end), ' Minutes') AS 'Appointment Length',CONCAT(MONTH(start), '/', DAY(start), '/',YEAR(start)) AS 'Date'FROM appointment;";               
+                }
+                else if (view_combo.SelectedIndex == 3) // Select Specific day and pull up calendar
+                {
+                    FormCalendar fc = new FormCalendar();
+                    fc.ShowDialog();
+                    cal_date = fc.GetDT;
+                    if (fc.GetDT != null)
+                    {
+                        query = "SELECT appointmentId AS ID, customerId AS 'Customer ID', userId AS 'User ID', title AS Title, type AS Type, appointment.description AS 'Description', CONCAT(HOUR(Convert_TZ(appointment.start, '+00:00', '" + TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(appointment.start, '+00:00', '" + TimeZoneConvert() + "'))) AS 'Start Time', CONCAT(HOUR(Convert_TZ(end, '+00:00', '" + TimeZoneConvert() + "')), ':', MINUTE(Convert_TZ(end, '+00:00', '" + TimeZoneConvert() + "'))) AS 'End Time',CONCAT(TIMESTAMPDIFF(MINUTE, start, end), ' Minutes') AS 'Appointment Length',CONCAT(MONTH(start), '/', DAY(start), '/',YEAR(start)) AS 'Date'FROM appointment WHERE DATE(start) = DATE('" + cal_date.Year + "-" + cal_date.Month + "-" + cal_date.Day + "');";
+                    } else
+                    {
+                        query = "";
+                        view_combo.SelectedIndex = 1;
+                    }
                 }
                 if (query != "")
                 {
