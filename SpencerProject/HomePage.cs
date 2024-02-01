@@ -28,10 +28,11 @@ namespace SpencerProject
         {
             InitializeComponent();
             view_combo.SelectedIndex = 1; // This sets the appointments Calendar view to Month.(0 = week, 1 = month, 2 = all)
+            report_combo.SelectedIndex = 0;
             Console.WriteLine("TimeZone Converted: " + TimeZoneConvert());
             customers_gridView.RowHeadersVisible = false;
             appointments_gridview.RowHeadersVisible = false;
-            //calendar.MaxSelectionCount = 1;
+            
             try
             {
                 // Populates the customers gridview table.
@@ -87,6 +88,40 @@ namespace SpencerProject
             }
             reader.Close();
         }
+
+        private void reports_btn_Click(object sender, EventArgs e)
+        {
+            //Trying out the switch statement.
+            try
+            {
+                switch (report_combo.SelectedIndex)
+                {
+                    case 0:
+                        MessageBox.Show("Please Select a report");
+                        break;
+                    case 1:
+                        Console.WriteLine("First Option Selected");
+                        Report rep1 = new Report(1);
+                        rep1.ShowDialog();
+                        break;
+                    case 2:
+                        Console.WriteLine("Second Option Selected");
+                        Report rep2 = new Report(2);
+                        rep2.ShowDialog();
+                        break;
+                    case 3:
+                        Console.WriteLine("Third Option Selected");
+                        Report rep3 = new Report(3);
+                        rep3.ShowDialog();
+                        break;
+                }
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void appointments_gridview_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             //appt_id, userId, appt_type, appt_customerId, appt_time, appt_date, appt_desc;

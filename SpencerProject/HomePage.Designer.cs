@@ -43,6 +43,8 @@
             this.refresh_btn = new System.Windows.Forms.Button();
             this.view_combo = new System.Windows.Forms.ComboBox();
             this.view_lbl = new System.Windows.Forms.Label();
+            this.reports_btn = new System.Windows.Forms.Button();
+            this.report_combo = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.customers_gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointments_gridview)).BeginInit();
             this.SuspendLayout();
@@ -219,11 +221,39 @@
             this.view_lbl.TabIndex = 16;
             this.view_lbl.Text = "View:";
             // 
+            // reports_btn
+            // 
+            this.reports_btn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.reports_btn.Location = new System.Drawing.Point(822, 12);
+            this.reports_btn.Name = "reports_btn";
+            this.reports_btn.Size = new System.Drawing.Size(183, 35);
+            this.reports_btn.TabIndex = 17;
+            this.reports_btn.Text = "Generate Report";
+            this.reports_btn.UseVisualStyleBackColor = true;
+            this.reports_btn.Click += new System.EventHandler(this.reports_btn_Click);
+            // 
+            // report_combo
+            // 
+            this.report_combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.report_combo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.report_combo.FormattingEnabled = true;
+            this.report_combo.Items.AddRange(new object[] {
+            "(Select Report)",
+            "Sort Appointment Types(By Month)",
+            "Schedule for each user",
+            "Sort # of Appointments per Month"});
+            this.report_combo.Location = new System.Drawing.Point(1024, 14);
+            this.report_combo.Name = "report_combo";
+            this.report_combo.Size = new System.Drawing.Size(326, 32);
+            this.report_combo.TabIndex = 18;
+            // 
             // HomePage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 600);
+            this.Controls.Add(this.report_combo);
+            this.Controls.Add(this.reports_btn);
             this.Controls.Add(this.view_lbl);
             this.Controls.Add(this.view_combo);
             this.Controls.Add(this.refresh_btn);
@@ -266,5 +296,7 @@
         private System.Windows.Forms.Button refresh_btn;
         private System.Windows.Forms.ComboBox view_combo;
         private System.Windows.Forms.Label view_lbl;
+        private System.Windows.Forms.Button reports_btn;
+        private System.Windows.Forms.ComboBox report_combo;
     }
 }
