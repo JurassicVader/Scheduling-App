@@ -14,6 +14,8 @@ using System.Windows.Forms;
 using System.Globalization;
 using Org.BouncyCastle.Asn1.Cmp;
 using System.Runtime.CompilerServices;
+using System.IO;
+using System.Security.Policy;
 
 namespace SpencerProject
 {
@@ -22,10 +24,13 @@ namespace SpencerProject
         private string currentLang; // Current language set on the Login Screen
         private string windowsLang; // What the windows language is set to.
         private string username;
-
+        string filePath = Environment.CurrentDirectory+"\\Login_History.txt";
+        
+        string loginDetails = "";
         public Login()
         {
             InitializeComponent();
+            Console.WriteLine(filePath);
             Console.WriteLine("Language: " + CurrentRegion());
             if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
             {
@@ -124,6 +129,7 @@ namespace SpencerProject
 
         private void Login_btn_Click(object sender, EventArgs e)
         {
+
             try
             {
                 bool success = false;
@@ -139,11 +145,26 @@ namespace SpencerProject
                 else
                 {
                     incorrect_txt.Visible = true;
+                    loginDetails = "Username: " + username_txtbox.Text + "\t login attempt Failed --- TimeStamp(UTC): " + DateTime.UtcNow.ToString();
+                    using (StreamWriter fs = File.AppendText(filePath))
+                    {
+                        fs.WriteLine(loginDetails);
+                        Console.WriteLine("Content succesfully written to the file.");
+                    }
                 }
                 reader.Close();
                 if (success == true)
-                {
+                { 
                     username = username_txtbox.Text;
+                    loginDetails = "Username: "+username + "\t login Success --- TimeStamp(UTC): " + DateTime.UtcNow.ToString();
+
+                    using (StreamWriter fs = File.AppendText(filePath))
+                    {
+                        fs.WriteLine(loginDetails);
+                        Console.WriteLine("Content succesfully written to the file.");
+                    }
+
+
                     HomePage homePage = new HomePage(username);
                     homePage.Show();
                     this.Hide();

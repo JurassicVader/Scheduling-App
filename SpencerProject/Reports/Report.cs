@@ -110,9 +110,8 @@ namespace SpencerProject
                         title_txt.Text = "Report: Schedule for each user";
                         desc_txt.Text = "Report Information:\nGetting the schedule for each user.";
                         // report to run**
-                        Func<string, string, string, string> lambdaFunc = (qtype, query_statement, table_name) => qtype + " " + query_statement + " FROM " + table_name + ";";
+                        Func<string, string, string, string> lambdaFunc = (qtype, query_statement, table_name) => qtype + " " + query_statement + " FROM " + table_name + ";"; // Using the lambda method to append the query statement together.
                         query = lambdaFunc("SELECT", "user.userName AS 'Username', appointment.title AS 'Title', appointment.start AS 'Start Time'", "user LEFT JOIN appointment ON user.userId = appointment.userId ORDER BY user.username, appointment.start");
-                        //query = "SELECT user.userName AS 'Username', appointment.title AS 'Title', appointment.start AS 'Start Time' FROM user LEFT JOIN appointment ON user.userId = appointment.userId;";
                         cmd.CommandText = query;
                         MySqlDataReader rdr2 = cmd.ExecuteReader();
                         while (rdr2.Read())
