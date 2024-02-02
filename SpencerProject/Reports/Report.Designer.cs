@@ -32,6 +32,7 @@
             this.desc_txt = new System.Windows.Forms.Label();
             this.data_title_txt = new System.Windows.Forms.Label();
             this.data_txt = new System.Windows.Forms.Label();
+            this.exit_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // title_txt
@@ -77,11 +78,23 @@
             this.data_txt.TabIndex = 11;
             this.data_txt.Text = "*Data*";
             // 
+            // exit_btn
+            // 
+            this.exit_btn.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exit_btn.Location = new System.Drawing.Point(707, 403);
+            this.exit_btn.Name = "exit_btn";
+            this.exit_btn.Size = new System.Drawing.Size(81, 35);
+            this.exit_btn.TabIndex = 13;
+            this.exit_btn.Text = "Exit";
+            this.exit_btn.UseVisualStyleBackColor = true;
+            this.exit_btn.Click += new System.EventHandler(this.exit_btn_Click);
+            // 
             // Report
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.exit_btn);
             this.Controls.Add(this.data_txt);
             this.Controls.Add(this.data_title_txt);
             this.Controls.Add(this.desc_txt);
@@ -99,5 +112,6 @@
         private System.Windows.Forms.Label desc_txt;
         private System.Windows.Forms.Label data_title_txt;
         private System.Windows.Forms.Label data_txt;
+        private System.Windows.Forms.Button exit_btn;
     }
 }

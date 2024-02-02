@@ -37,24 +37,72 @@ namespace SpencerProject
                 switch (id)
                 {
                     case 1: // Running the sort appointment type by month EX. January\Scrum, Test 
-                        DataRow type = null;
-                        DataRow start = null;
-                        string typeVal = null;
                         title_txt.Text = "Report: Sort Appointment Types(By Month)";
                         desc_txt.Text = "Report Information:\nSorting all of the appointment types by month.";
-                        //Report to run**
-                        query = "SELECT type AS 'Type', start AS 'Start' FROM appointment;"; // Change this to reflect something like: January: scrum ?
+
+                        List<string> start1 = new List<string>(); List<string> type = new List<string>(); List<string> jan = new List<string>(); List<string> feb = new List<string>(); List<string> mar = new List<string>(); List<string> apr = new List<string>(); List<string> may = new List<string>(); List<string> june = new List<string>(); List<string> jul = new List<string>(); List<string> aug = new List<string>(); List<string> sept = new List<string>(); List<string> oct = new List<string>(); List<string> nov = new List<string>(); List<string> dec = new List<string>();
+
+                        query = "SELECT type AS 'Type', MONTH(start) AS 'Start' FROM appointment;"; // Change this to reflect something like: January: scrum ?
+                        cmd.CommandText = query;
+                        MySqlDataReader rdr1 = cmd.ExecuteReader();
+                        while (rdr1.Read())
+                        {
+                            start1.Add(rdr1["Start"].ToString());
+                            type.Add(rdr1["Type"].ToString());
+                        }
+                        rdr1.Close();
+                        int[] months1 = Array.ConvertAll(start1.ToArray(), s => int.Parse(s)); // This lambda is a part of the ConvertAll Method in the array class. It takes each of the values in the array and converts them to integers.
                         
-                        using (MySqlDataAdapter values = new MySqlDataAdapter(query, DBConnection.conn))
+                        
+                        foreach(var x in months1.Select((value, i) => new { i, value })) // Using a lambda to help keep track of the index with the variable name "i"
                         {
-                            values.Fill(dt);
-                        }
+                            var Value = x.value;
+                            var index = x.i;
 
-                        foreach (DataRow row in dt.Rows)
-                        {
-                            //if
-                        }
-
+                            switch (Value)
+                            {
+                                case 1:
+                                    jan.Add(type[index]);
+                                    break;
+                                case 2:
+                                    feb.Add(type[index]);
+                                    break;
+                                case 3:
+                                    mar.Add(type[index]);
+                                    break;
+                                case 4:
+                                    apr.Add(type[index]);
+                                    break;
+                                case 5:
+                                    may.Add(type[index]);
+                                    break;
+                                case 6:
+                                    june.Add(type[index]);
+                                    break;
+                                case 7:
+                                    jul.Add(type[index]);
+                                    break;
+                                case 8:
+                                    aug.Add(type[index]);
+                                    break;
+                                case 9:
+                                    sept.Add(type[index]);
+                                    break;
+                                case 10:
+                                    oct.Add(type[index]);
+                                    break;
+                                case 11:
+                                    nov.Add(type[index]);
+                                    break;
+                                case 12:
+                                    dec.Add(type[index]);
+                                    break;
+                            }
+                            
+                        } 
+                        string[] Jan = jan.ToArray(); string[] Feb = feb.ToArray(); string[] Mar = mar.ToArray(); string[] Apr = apr.ToArray(); string[] May = may.ToArray(); string[] Jun = june.ToArray(); string[] Jul = jul.ToArray(); string[] Aug = aug.ToArray(); string[] Sept = sept.ToArray(); string[] Oct = oct.ToArray(); string[] Nov = nov.ToArray(); string[] Dec = dec.ToArray();
+                        
+                        data_txt.Text = TypeCounts("January", Jan) + '\n' + TypeCounts("February", Feb) + '\n' + TypeCounts("March", Mar) + '\n' + TypeCounts("April", Apr) + '\n' + TypeCounts("May", May) + '\n' + TypeCounts("June", Jun) + '\n' + TypeCounts("July", Jul) + '\n' + TypeCounts("August", Aug) + '\n' + TypeCounts("September", Sept) + '\n' + TypeCounts("October", Oct) + '\n' + TypeCounts("November", Nov) + '\n' + TypeCounts("December", Dec);
                         break;
 
 
@@ -68,7 +116,7 @@ namespace SpencerProject
                         {
                             values.Fill(dt);
                         }
-
+                        
                         //lambda => sort through and seperate usernames into individual columns.
 
                         data_txt.Text = "Lambda results";
@@ -107,6 +155,29 @@ namespace SpencerProject
                 MessageBox.Show(ex.Message);
             }
             
+        }
+
+        private void exit_btn_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        static string TypeCounts(string month, string[] types)
+        {
+            Dictionary<string, int> typeCount = new Dictionary<string, int>();
+            foreach (string type in types)
+            {
+                if (typeCount.ContainsKey(type))
+                {
+                    typeCount[type]++;
+                } else
+                {
+                    typeCount[type] = 1;
+                }
+            }
+            string result = $"{month}: " + string.Join(" / ", typeCount.Select(x => $"{x.Key}: {x.Value}"));
+            Console.WriteLine(result);
+            return result;
         }
     }
 }
