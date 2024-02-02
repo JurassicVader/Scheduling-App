@@ -23,14 +23,14 @@ namespace SpencerProject
         List<string> UserName = new List<string>();
         List<DateTime> StartTime = new List<DateTime>();
         List<string> Type = new List<string>();
-        
+
 
         public Report(int id)
         {
             InitializeComponent();
             string query = "";
             MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
-            
+
             try
             {
 
@@ -52,9 +52,9 @@ namespace SpencerProject
                         }
                         rdr1.Close();
                         int[] months1 = Array.ConvertAll(start1.ToArray(), s => int.Parse(s)); // This lambda is a part of the ConvertAll Method in the array class. It takes each of the values in the array and converts them to integers.
-                        
-                        
-                        foreach(var x in months1.Select((value, i) => new { i, value })) // Using a lambda to help keep track of the index with the variable name "i"
+
+
+                        foreach (var x in months1.Select((value, i) => new { i, value })) // Using a lambda method to help keep track of the index for the months1 list. The index variable name is "i"
                         {
                             var Value = x.value;
                             var index = x.i;
@@ -98,28 +98,30 @@ namespace SpencerProject
                                     dec.Add(type[index]);
                                     break;
                             }
-                            
-                        } 
+
+                        }
                         string[] Jan = jan.ToArray(); string[] Feb = feb.ToArray(); string[] Mar = mar.ToArray(); string[] Apr = apr.ToArray(); string[] May = may.ToArray(); string[] Jun = june.ToArray(); string[] Jul = jul.ToArray(); string[] Aug = aug.ToArray(); string[] Sept = sept.ToArray(); string[] Oct = oct.ToArray(); string[] Nov = nov.ToArray(); string[] Dec = dec.ToArray();
-                        
+
                         data_txt.Text = TypeCounts("January", Jan) + '\n' + TypeCounts("February", Feb) + '\n' + TypeCounts("March", Mar) + '\n' + TypeCounts("April", Apr) + '\n' + TypeCounts("May", May) + '\n' + TypeCounts("June", Jun) + '\n' + TypeCounts("July", Jul) + '\n' + TypeCounts("August", Aug) + '\n' + TypeCounts("September", Sept) + '\n' + TypeCounts("October", Oct) + '\n' + TypeCounts("November", Nov) + '\n' + TypeCounts("December", Dec);
                         break;
-
-
                     case 2:
-
+                        schedule_gridView.Visible = true;
+                        data_txt.Visible = false;
                         title_txt.Text = "Report: Schedule for each user";
                         desc_txt.Text = "Report Information:\nGetting the schedule for each user.";
                         // report to run**
-                        query = "SELECT user.userName AS 'Username', appointment.title AS 'Title' FROM user LEFT JOIN appointment ON user.userId = appointment.userId;";
-                        using (MySqlDataAdapter values = new MySqlDataAdapter(query, DBConnection.conn))
+                        Func<string, string, string, string> lambdaFunc = (qtype, query_statement, table_name) => qtype + " " + query_statement + " FROM " + table_name + ";";
+                        query = lambdaFunc("SELECT", "user.userName AS 'Username', appointment.title AS 'Title', appointment.start AS 'Start Time'", "user LEFT JOIN appointment ON user.userId = appointment.userId ORDER BY user.username, appointment.start");
+                        //query = "SELECT user.userName AS 'Username', appointment.title AS 'Title', appointment.start AS 'Start Time' FROM user LEFT JOIN appointment ON user.userId = appointment.userId;";
+                        cmd.CommandText = query;
+                        MySqlDataReader rdr2 = cmd.ExecuteReader();
+                        while (rdr2.Read())
                         {
-                            values.Fill(dt);
+                            var scheduleTable = new BindingSource();
+                            scheduleTable.DataSource = rdr2;
+                            schedule_gridView.DataSource = scheduleTable;
                         }
-                        
-                        //lambda => sort through and seperate usernames into individual columns.
-
-                        data_txt.Text = "Lambda results";
+                        rdr2.Close();
                         break;
                     case 3:
 
@@ -154,7 +156,7 @@ namespace SpencerProject
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
 
         private void exit_btn_Click(object sender, EventArgs e)
@@ -170,7 +172,8 @@ namespace SpencerProject
                 if (typeCount.ContainsKey(type))
                 {
                     typeCount[type]++;
-                } else
+                }
+                else
                 {
                     typeCount[type] = 1;
                 }
@@ -179,5 +182,6 @@ namespace SpencerProject
             Console.WriteLine(result);
             return result;
         }
+
     }
 }

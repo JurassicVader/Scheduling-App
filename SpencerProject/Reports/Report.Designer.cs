@@ -33,6 +33,8 @@
             this.data_title_txt = new System.Windows.Forms.Label();
             this.data_txt = new System.Windows.Forms.Label();
             this.exit_btn = new System.Windows.Forms.Button();
+            this.schedule_gridView = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.schedule_gridView)).BeginInit();
             this.SuspendLayout();
             // 
             // title_txt
@@ -89,11 +91,21 @@
             this.exit_btn.UseVisualStyleBackColor = true;
             this.exit_btn.Click += new System.EventHandler(this.exit_btn_Click);
             // 
+            // schedule_gridView
+            // 
+            this.schedule_gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.schedule_gridView.Location = new System.Drawing.Point(17, 144);
+            this.schedule_gridView.Name = "schedule_gridView";
+            this.schedule_gridView.Size = new System.Drawing.Size(497, 275);
+            this.schedule_gridView.TabIndex = 14;
+            this.schedule_gridView.Visible = false;
+            // 
             // Report
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.schedule_gridView);
             this.Controls.Add(this.exit_btn);
             this.Controls.Add(this.data_txt);
             this.Controls.Add(this.data_title_txt);
@@ -101,6 +113,7 @@
             this.Controls.Add(this.title_txt);
             this.Name = "Report";
             this.Text = "Report";
+            ((System.ComponentModel.ISupportInitialize)(this.schedule_gridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -113,5 +126,6 @@
         private System.Windows.Forms.Label data_title_txt;
         private System.Windows.Forms.Label data_txt;
         private System.Windows.Forms.Button exit_btn;
+        private System.Windows.Forms.DataGridView schedule_gridView;
     }
 }
