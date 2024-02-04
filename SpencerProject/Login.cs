@@ -21,6 +21,7 @@ namespace SpencerProject
 {
     public partial class Login : Form
     {
+        private string currentLocation = RegionInfo.CurrentRegion.EnglishName;
         private string currentLang; // Current language set on the Login Screen
         private string windowsLang; // What the windows language is set to.
         private string username;
@@ -32,6 +33,7 @@ namespace SpencerProject
             InitializeComponent();
             Console.WriteLine(filePath);
             Console.WriteLine("Language: " + CurrentRegion());
+            country_lbl.Text = "Country/Region: " + currentLocation;
             if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
             {
                 currentLang = "en";
@@ -46,7 +48,9 @@ namespace SpencerProject
             {
                 currentLang = "en";
                 Change_To_EN();
-            } 
+            }
+            //if (RegionInfo.CurrentRegion)
+            
         }
         private void Language_Checker() // Function that checks for language change
         {
@@ -55,6 +59,7 @@ namespace SpencerProject
              */
             try
             {
+                country_lbl.Text = "Country/Region: " + RegionInfo.CurrentRegion.EnglishName;
                 windowsLang = CurrentRegion();
                 if (windowsLang != currentLang)
                 {
@@ -62,6 +67,7 @@ namespace SpencerProject
                     {
                         Change_To_IT();
                         currentLang = "it";
+                        
                     }
                     else
                     {
@@ -100,7 +106,6 @@ namespace SpencerProject
                 return "None";
             }
         }
-        
         private void Change_To_EN() // Changes the Login page to English
         {
             title_txt.Text = "User Login Form";
@@ -121,6 +126,7 @@ namespace SpencerProject
             exit_btn.Text = "Esci";
             this.Text = "Accesso Utente";
         }
+
 
         private void Exit_btn_Click(object sender, EventArgs e)
         {

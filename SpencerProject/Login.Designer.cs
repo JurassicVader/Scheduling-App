@@ -38,6 +38,7 @@
             this.exit_btn = new System.Windows.Forms.Button();
             this.incorrect_txt = new System.Windows.Forms.Label();
             this.Timer_ticks = new System.Windows.Forms.Timer(this.components);
+            this.country_lbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // login_btn
@@ -128,11 +129,23 @@
             this.Timer_ticks.Interval = 1000;
             this.Timer_ticks.Tick += new System.EventHandler(this.Timer_ticks_Tick);
             // 
+            // country_lbl
+            // 
+            this.country_lbl.AutoSize = true;
+            this.country_lbl.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.country_lbl.ForeColor = System.Drawing.Color.Black;
+            this.country_lbl.Location = new System.Drawing.Point(12, 233);
+            this.country_lbl.Name = "country_lbl";
+            this.country_lbl.Size = new System.Drawing.Size(123, 18);
+            this.country_lbl.TabIndex = 9;
+            this.country_lbl.Text = "Country/Region: ";
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(450, 260);
+            this.Controls.Add(this.country_lbl);
             this.Controls.Add(this.incorrect_txt);
             this.Controls.Add(this.exit_btn);
             this.Controls.Add(this.password_lbl);
@@ -159,6 +172,7 @@
         private System.Windows.Forms.Button exit_btn;
         private System.Windows.Forms.Label incorrect_txt;
         private System.Windows.Forms.Timer Timer_ticks;
+        private System.Windows.Forms.Label country_lbl;
     }
 }
 
